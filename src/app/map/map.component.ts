@@ -1,5 +1,5 @@
 import { Component, ElementRef, inject, viewChild } from '@angular/core';
-import { MapService } from './map.service';
+import { MapService, Zone } from './map.service';
 
 @Component({
   selector: 'app-map',
@@ -13,8 +13,9 @@ export class MapComponent {
   private readonly canvasRef = viewChild.required<ElementRef>('map');
   private mapContext!: CanvasRenderingContext2D;
 
-  public ngOnInit(): void {  
+  public ngOnInit(): void {
     this.initializeCanvas();
+    this.loadMapData();
   }
 
   private initializeCanvas(): void {
@@ -24,5 +25,35 @@ export class MapComponent {
     canvas.height = 800;
     this.mapContext.fillStyle = '#e9e9e9ff';
     this.mapContext.fillRect(0, 0, canvas.width, canvas.height);
+  }
+
+  private loadMapData(): void {
+    this.mapService.loadMap$().subscribe({
+      next: (mapInfo) => {
+        this.renderZones(mapInfo.zones);
+      },
+    });
+  }
+
+  private renderZones(zones: Zone[]): void {
+    zones.forEach(zone => {
+      this.mapContext.fillStyle = zone.color;
+      this.mapContext.fillRect(
+        zone.canvas.x,
+        zone.canvas.y,
+        zone.canvas.width,
+        zone.canvas.height
+      );
+
+      this.mapContext.fillStyle = '#fff';
+      this.mapContext.font = 'bold 20px Arial';
+      this.mapContext.textAlign = 'center';
+      this.mapContext.textBaseline = 'middle';
+      this.mapContext.fillText(
+        zone.type.toUpperCase(),
+        zone.canvas.x + zone.canvas.width / 2,
+        zone.canvas.y + zone.canvas.height / 2
+      );
+    });
   }
 }
