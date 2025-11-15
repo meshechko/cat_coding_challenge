@@ -10,4 +10,9 @@ import { MapService } from './map.service';
 export class MapComponent {
   private readonly mapService = inject(MapService);
 
+  ngOnInit() {
+    this.mapService.loadMap$().subscribe(mapInfo => {
+      console.log('Map Info:', mapInfo);
+    });
+  }
 }
