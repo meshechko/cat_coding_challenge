@@ -1,0 +1,45 @@
+.truck-container {
+  position: absolute;
+}
+
+.truck {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid #000;
+}
+
+.truck-info {
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.9);
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  display: block;
+}
+
+.truck-info div {
+  margin: 4px 0;
+}
+
+.status-loading {
+  background-color: #FF8C00;
+}
+
+.status-hauling {
+  background-color: #28A745;
+}
+
+.status-dumping {
+  background-color: #007BFF;
+}
+
+.status-idle {
+  background-color: #6C757D;
+}
