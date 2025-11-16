@@ -39,10 +39,10 @@ export class MapComponent {
     zones.forEach(zone => {
       this.mapContext.fillStyle = zone.color;
       this.mapContext.fillRect(
-        zone.canvas.x,
-        zone.canvas.y,
-        zone.canvas.width,
-        zone.canvas.height
+        zone.x,
+        zone.y,
+        zone.width,
+        zone.height
       );
 
       this.mapContext.fillStyle = '#fff';
@@ -51,8 +51,8 @@ export class MapComponent {
       this.mapContext.textBaseline = 'middle';
       this.mapContext.fillText(
         zone.type.toUpperCase(),
-        zone.canvas.x + zone.canvas.width / 2,
-        zone.canvas.y + zone.canvas.height / 2
+        zone.x + zone.width / 2,
+        zone.y + zone.height / 2
       );
     });
   }
