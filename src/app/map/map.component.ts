@@ -13,6 +13,8 @@ export class MapComponent {
 
   private readonly canvasRef = viewChild.required<ElementRef>('map');
   private mapContext!: CanvasRenderingContext2D;
+  public readonly mapWidth = 1000;
+  public readonly mapHeight = 800;
 
   public ngOnInit(): void {
     this.initializeCanvas();
@@ -22,8 +24,8 @@ export class MapComponent {
   private initializeCanvas(): void {
     const canvas = this.canvasRef().nativeElement;
     this.mapContext = canvas.getContext('2d');
-    canvas.width = 1000;
-    canvas.height = 800;
+    canvas.width = this.mapWidth;
+    canvas.height = this.mapHeight;
     this.mapContext.fillStyle = '#e9e9e9ff';
     this.mapContext.fillRect(0, 0, canvas.width, canvas.height);
   }
