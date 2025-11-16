@@ -1,4 +1,4 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { TruckService } from './truck.service';
 import { CommonModule } from '@angular/common';
 

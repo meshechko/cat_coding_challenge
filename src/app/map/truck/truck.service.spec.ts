@@ -1,7 +1,7 @@
 import { TruckService } from './truck.service';
 import { TestBed } from '@angular/core/testing';
 
-fdescribe('TruckService', () => {
+describe('TruckService', () => {
   let service: TruckService;
 
   beforeEach(() => {
@@ -39,19 +39,23 @@ fdescribe('TruckService', () => {
       expect(result).toBe(1000);
     });
   });
+
   describe('hasReachedTarget', () => {
     it('should return true when distance is less than threshold', () => {
       const result = service['hasReachedTarget'](29.99, 30);
       expect(result).toBe(true);
     });
+
     it('should return false when distance equals threshold', () => {
       const result = service['hasReachedTarget'](30, 30);
       expect(result).toBe(false);
     });
+
     it('should return false when distance is greater than threshold', () => {
       const result = service['hasReachedTarget'](30.1, 30);
       expect(result).toBe(false);
     });
+
     it('should return true when distance is 0', () => {
       const result = service['hasReachedTarget'](0, 30);
       expect(result).toBe(true);
