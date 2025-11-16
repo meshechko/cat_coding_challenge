@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { TruckService } from './truck.service';
 import { CommonModule } from '@angular/common';
 
@@ -6,7 +6,8 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule],
   selector: 'truck',
   templateUrl: './truck.component.html',
-  styleUrl: './truck.component.css'
+  styleUrl: './truck.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TruckComponent {
   private truckService = inject(TruckService);

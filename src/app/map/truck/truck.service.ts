@@ -35,19 +35,20 @@ export class TruckService {
     const MAX_STEP = 120;
     
     const currentZone = this.zones[this.currentZoneIndex];
-    const currentState = this.truckStateSubject$.value;
+    let currentState = this.truckStateSubject$.value;
     const target = this.getRandomPointInZone(currentZone);
     const delta = this.calculateDelta(target, currentState);
     const distanceToTarget = Math.hypot(delta.dx, delta.dy);
     const step = this.getRandomInt(MIN_STEP, MAX_STEP);
     
     if (this.hasReachedTarget(distanceToTarget, step)) {
-      this.directToNextTarget(target, currentState);
+      currentState = this.directToNextTarget(target, currentState);
     } else {
-      this.updateTruckPosition(delta, distanceToTarget, step, this.bounds, currentState);
+      currentState = this.updateTruckPosition(delta, distanceToTarget, step, this.bounds, currentState);
     }
-    this.updateStatus(currentState);
-    this.truckStateSubject$.next({...currentState});
+    
+    currentState = this.updateStatus(currentState);
+    this.truckStateSubject$.next(currentState);
   }
 
   private calculateDelta(target: { x: number; y: number }, state: TruckState): { dx: number; dy: number } {
@@ -61,11 +62,13 @@ export class TruckService {
     return distance < threshold;
   }
 
-  private directToNextTarget(target: { x: number; y: number }, state: TruckState): void {
+  private directToNextTarget(target: { x: number; y: number }, state: TruckState): TruckState {
     this.currentZoneIndex = (this.currentZoneIndex + 1) % this.zones.length;
-    state.speed = 0;
-    state.position.x = target.x;
-    state.position.y = target.y;
+    return {
+      ...state,
+      speed: 0,
+      position: { x: target.x, y: target.y }
+    };
   }
 
   private updateTruckPosition(
@@ -74,15 +77,20 @@ export class TruckService {
     step: number,
     bounds: MapBounds,
     state: TruckState
-  ): void {
+  ): TruckState {    
     const RANDOM_OFFSET_X = this.getRandomInt(0, 30); 
     const RANDOM_OFFSET_Y = this.getRandomInt(0, 30); 
     const moveX = (delta.dx / distance) * step + RANDOM_OFFSET_X;
     const moveY = (delta.dy / distance) * step + RANDOM_OFFSET_Y;
     
-    state.position.x = this.clamp(state.position.x + moveX, bounds.maxX);
-    state.position.y = this.clamp(state.position.y + moveY, bounds.maxY);
-    state.speed = Math.floor(step / 2);
+    return {
+      ...state,
+      position: {
+        x: this.clamp(state.position.x + moveX, bounds.maxX),
+        y: this.clamp(state.position.y + moveY, bounds.maxY)
+      },
+      speed: Math.floor(step / 2)
+    };
   }
 
   private getRandomInt(min: number, max: number) { 
@@ -100,22 +108,26 @@ export class TruckService {
     };
   }
 
-  private updateStatus(state: TruckState): void {
+  private updateStatus(state: TruckState): TruckState {
     const currentZone = this.zones.find(zone =>
       this.isInZone(state.position.x, state.position.y, zone)
     );
 
+    let newStatus = state.status;
+
     if (currentZone) {
       if (currentZone.type === ZoneType.Loading) {
-        state.status = TruckStatus.Loading;
+        newStatus = TruckStatus.Loading;
       } else if (currentZone.type === ZoneType.Dumping) {
-        state.status = TruckStatus.Dumping;
+        newStatus = TruckStatus.Dumping;
       }
     } else if (state.speed > 0) {
-      state.status = TruckStatus.Hauling;
+      newStatus = TruckStatus.Hauling;
     } else {
-      state.status = TruckStatus.Idle;
+      newStatus = TruckStatus.Idle;
     }
+
+    return { ...state, status: newStatus };
   }
 
   private isInZone(x: number, y: number, zone: Zone): boolean {

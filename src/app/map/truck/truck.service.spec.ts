@@ -81,32 +81,27 @@ describe('TruckService', () => {
 
     it('should set status to Loading when inside a loading zone', () => {
       const state: TruckState = { id: 'T-100', speed: 0, position: { x: 50, y: 50 }, status: TruckStatus.Idle };
-      service['updateStatus'](state);
-      expect(state.status).toBe(TruckStatus.Loading);
+      expect(service['updateStatus'](state).status).toBe(TruckStatus.Loading);
     });
 
     it('should set status to Dumping when inside a dumping zone', () => {
       const state: TruckState = { id: 'T-100', speed: 0, position: { x: 250, y: 250 }, status: TruckStatus.Idle };
-      service['updateStatus'](state);
-      expect(state.status).toBe(TruckStatus.Dumping);
+      expect(service['updateStatus'](state).status).toBe(TruckStatus.Dumping);
     });
 
     it('should set status to Hauling when outside Loading and Dumping zones and moving', () => {
       const state: TruckState = { id: 'T-100', speed: 50, position: { x: 150, y: 150 }, status: TruckStatus.Idle };
-      service['updateStatus'](state);
-      expect(state.status).toBe(TruckStatus.Hauling);
+      expect(service['updateStatus'](state).status).toBe(TruckStatus.Hauling);
     });
 
     it('should set status to Idle when outside Loading and Dumping zones and not moving', () => {
       const state: TruckState = { id: 'T-100', speed: 0, position: { x: 150, y: 150 }, status: TruckStatus.Hauling };
-      service['updateStatus'](state);
-      expect(state.status).toBe(TruckStatus.Idle);
+      expect(service['updateStatus'](state).status).toBe(TruckStatus.Idle);
     });
 
     it('should remain Idle if starting from Idle and not moving outside a zone', () => {
       const state: TruckState = { id: 'T-100', speed: 0, position: { x: 500, y: 500 }, status: TruckStatus.Idle };
-      service['updateStatus'](state);
-      expect(state.status).toBe(TruckStatus.Idle);
+      expect(service['updateStatus'](state).status).toBe(TruckStatus.Idle);
     });
   });
 
