@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { MapBounds, TruckState, TruckStatus, Zone } from "../models/map.models";
+import { MapBounds, TruckState, TruckStatus, Zone, ZoneType } from "../models/map.models";
 import { BehaviorSubject, interval } from "rxjs";
 
 @Injectable({
@@ -46,7 +46,7 @@ export class TruckService {
     } else {
       this.updateTruckPosition(delta, distanceToTarget, step, this.bounds, currentState);
     }
-    
+    this.updateStatus(currentState);
     this.truckStateSubject$.next({...currentState});
   }
 
@@ -98,5 +98,32 @@ export class TruckService {
       x: zone.x + Math.random() * zone.width,
       y: zone.y + Math.random() * zone.height
     };
+  }
+
+  private updateStatus(state: TruckState): void {
+    const currentZone = this.zones.find(zone =>
+      this.isInZone(state.position.x, state.position.y, zone)
+    );
+
+    if (currentZone) {
+      if (currentZone.type === ZoneType.Loading) {
+        state.status = TruckStatus.Loading;
+      } else if (currentZone.type === ZoneType.Dumping) {
+        state.status = TruckStatus.Dumping;
+      }
+    } else if (state.speed > 0) {
+      state.status = TruckStatus.Hauling;
+    } else {
+      state.status = TruckStatus.Idle;
+    }
+  }
+
+  private isInZone(x: number, y: number, zone: Zone): boolean {
+    return (
+      x >= zone.x &&
+      x <= zone.x + zone.width &&
+      y >= zone.y &&
+      y <= zone.y + zone.height
+    );
   }
 }
