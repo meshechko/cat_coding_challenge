@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { TruckState, TruckStatus, Zone } from "../models/map.models";
+import { MapBounds, TruckState, TruckStatus, Zone } from "../models/map.models";
 import { BehaviorSubject, interval } from "rxjs";
 
 @Injectable({
@@ -7,6 +7,7 @@ import { BehaviorSubject, interval } from "rxjs";
 })
 export class TruckService {
   private zones: Zone[] = [];
+  private bounds: MapBounds = { maxX: 0, maxY: 0 };
   private currentZoneIndex: number = 0;
 
   public initialTruckState: TruckState = {
@@ -19,8 +20,9 @@ export class TruckService {
   private truckStateSubject$ = new BehaviorSubject<TruckState>(this.initialTruckState);
   public readonly truckState$ = this.truckStateSubject$.asObservable();
 
-  public initialize(zones: Zone[]): void {
+  public initialize(zones: Zone[], bounds: MapBounds): void {
     this.zones = zones;
+    this.bounds = bounds;
     this.startTruckMovementSimulation();
   }
 
@@ -42,7 +44,7 @@ export class TruckService {
     if (this.hasReachedTarget(distanceToTarget, step)) {
       this.directToNextTarget(target, currentState);
     } else {
-      this.updateTruckPosition(delta, distanceToTarget, step, currentState);
+      this.updateTruckPosition(delta, distanceToTarget, step, this.bounds, currentState);
     }
     
     this.truckStateSubject$.next({...currentState});
@@ -70,6 +72,7 @@ export class TruckService {
     delta: { dx: number; dy: number },
     distance: number,
     step: number,
+    bounds: MapBounds,
     state: TruckState
   ): void {
     const RANDOM_OFFSET_X = this.getRandomInt(0, 30); 
@@ -77,8 +80,8 @@ export class TruckService {
     const moveX = (delta.dx / distance) * step + RANDOM_OFFSET_X;
     const moveY = (delta.dy / distance) * step + RANDOM_OFFSET_Y;
     
-    state.position.x = this.clamp(state.position.x + moveX, this.zones[this.currentZoneIndex].width);
-    state.position.y = this.clamp(state.position.y + moveY, this.zones[this.currentZoneIndex].height);
+    state.position.x = this.clamp(state.position.x + moveX, bounds.maxX);
+    state.position.y = this.clamp(state.position.y + moveY, bounds.maxY);
     state.speed = Math.floor(step);
   }
 

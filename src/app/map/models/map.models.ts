@@ -23,6 +23,11 @@ export interface MapInfo {
   zones: Zone[];
 }
 
+export interface MapBounds {
+  maxX: number;
+  maxY: number;
+}
+
 export enum ZoneType {
   Loading = 'loading',
   Dumping = 'dumping'

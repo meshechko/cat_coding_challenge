@@ -1,6 +1,6 @@
 import { Component, ElementRef, inject, viewChild } from '@angular/core';
 import { MapService } from './map.service';
-import { Zone } from './models/map.models';
+import { MapBounds, Zone } from './models/map.models';
 import { TruckComponent } from "./truck/truck.component";
 import { TruckService } from './truck/truck.service';
 
@@ -18,6 +18,11 @@ export class MapComponent {
   private mapContext!: CanvasRenderingContext2D;
   public readonly mapWidth = 1000;
   public readonly mapHeight = 800;
+
+  public readonly bounds: MapBounds = {
+    maxX: this.mapWidth,
+    maxY: this.mapHeight
+  };
 
   public ngOnInit(): void {
     this.initializeCanvas();
@@ -38,7 +43,8 @@ export class MapComponent {
       next: (mapInfo) => {
         this.renderZones(mapInfo.zones);
         this.truckService.initialize(
-          mapInfo.zones
+          mapInfo.zones,
+          this.bounds
         );
       },
     });
