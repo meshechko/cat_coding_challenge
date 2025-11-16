@@ -78,6 +78,10 @@ export class TruckService {
     bounds: MapBounds,
     state: TruckState
   ): TruckState {    
+    if (this.stopOccasionally()) {
+      return { ...state, speed: 0 };
+    }
+
     const RANDOM_OFFSET_X = this.getRandomInt(0, 30); 
     const RANDOM_OFFSET_Y = this.getRandomInt(0, 30); 
     const moveX = (delta.dx / distance) * step + RANDOM_OFFSET_X;
@@ -91,6 +95,11 @@ export class TruckService {
       },
       speed: Math.floor(step / 2)
     };
+  }
+
+  private stopOccasionally(): boolean {
+    const STOP_CHANCE = 0.2;
+    return Math.random() < STOP_CHANCE;
   }
 
   private getRandomInt(min: number, max: number) { 
