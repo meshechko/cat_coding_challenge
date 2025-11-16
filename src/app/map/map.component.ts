@@ -1,8 +1,9 @@
 import { Component, ElementRef, inject, viewChild } from '@angular/core';
 import { MapService } from './map.service';
-import { MapBounds, Zone, ZoneType } from './models/map.models';
+import { MapBounds, MapInfo, Zone, ZoneType } from './models/map.models';
 import { TruckComponent } from "./truck/truck.component";
 import { TruckService } from './truck/truck.service';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-map',
@@ -26,7 +27,17 @@ export class MapComponent {
 
   public ngOnInit(): void {
     this.initializeCanvas();
-    this.loadMapData();
+    this.mapService.loadMap$()
+    .pipe(take(1))
+    .subscribe(
+      (mapInfo: MapInfo) => {
+        this.renderZones(mapInfo.zones);
+        this.truckService.initialize(
+          mapInfo.zones,
+          this.bounds
+        );
+      }
+    )
   }
 
   private initializeCanvas(): void {
@@ -36,18 +47,6 @@ export class MapComponent {
     canvas.height = this.mapHeight;
     this.mapContext.fillStyle = '#e9e9e9ff';
     this.mapContext.fillRect(0, 0, canvas.width, canvas.height);
-  }
-
-  private loadMapData(): void {
-    this.mapService.loadMap$().subscribe({
-      next: (mapInfo) => {
-        this.renderZones(mapInfo.zones);
-        this.truckService.initialize(
-          mapInfo.zones,
-          this.bounds
-        );
-      },
-    });
   }
 
   private renderZones(zones: Zone[]): void {
