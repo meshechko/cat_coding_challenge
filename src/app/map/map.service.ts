@@ -1,30 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { delay, Observable } from 'rxjs';
-
-export interface Zone {
-  id: string;
-  type: string;
-  color: string;
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-}
-
-export interface MapInfo {
-  siteName: string;
-  location: {
-    latitude: number;
-    longitude: number;
-    address: string;
-  };
-  metadata: {
-    createdAt: string;
-    lastUpdated: string;
-  };
-  zones: Zone[];
-}
+import { MapInfo } from './models/map.models';
 
 @Injectable({
   providedIn: 'root'

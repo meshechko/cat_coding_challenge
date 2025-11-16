@@ -1,5 +1,6 @@
 import { Component, ElementRef, inject, viewChild } from '@angular/core';
-import { MapService, Zone } from './map.service';
+import { MapService } from './map.service';
+import { Zone } from './models/map.models';
 
 @Component({
   selector: 'app-map',
