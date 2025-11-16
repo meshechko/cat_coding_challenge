@@ -31,8 +31,8 @@ export class TruckService {
   }
 
   private moveTruck(): void {
-    const MIN_STEP = 30;
-    const MAX_STEP = 60;
+    const MIN_STEP = 80;
+    const MAX_STEP = 120;
     
     const currentZone = this.zones[this.currentZoneIndex];
     const currentState = this.truckStateSubject$.value;
