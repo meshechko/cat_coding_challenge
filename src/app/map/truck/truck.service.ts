@@ -82,7 +82,7 @@ export class TruckService {
     
     state.position.x = this.clamp(state.position.x + moveX, bounds.maxX);
     state.position.y = this.clamp(state.position.y + moveY, bounds.maxY);
-    state.speed = Math.floor(step);
+    state.speed = Math.floor(step / 2);
   }
 
   private getRandomInt(min: number, max: number) { 
