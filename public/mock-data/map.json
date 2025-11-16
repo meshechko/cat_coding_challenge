@@ -16,7 +16,6 @@
       "y": 0,
       "width": 300,
       "height": 300,
-      "color": "#a76e49ff",
       "type": "loading"
     },
     {
@@ -25,7 +24,6 @@
       "y": 500,
       "width": 300,
       "height": 300,
-      "color": "#3f7a4cff",
       "type": "dumping"
     }
   ]

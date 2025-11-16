@@ -65,8 +65,8 @@ describe('TruckService', () => {
 
   describe('updateStatus', () => {
     const mockZones: Zone[] = [
-      { id: '1', name: 'Loading Zone', type: ZoneType.Loading, x: 0, y: 0, width: 100, height: 100, color: '' },
-      { id: '2', name: 'Dumping Zone', type: ZoneType.Dumping, x: 200, y: 200, width: 100, height: 100, color: '' }
+      { id: '1', name: 'Loading Zone', type: ZoneType.Loading, x: 0, y: 0, width: 100, height: 100 },
+      { id: '2', name: 'Dumping Zone', type: ZoneType.Dumping, x: 200, y: 200, width: 100, height: 100 }
     ];
     const mockBounds: MapBounds = { maxX: 1000, maxY: 800 };
 
@@ -119,7 +119,6 @@ describe('TruckService', () => {
       y: 100,
       width: 200,
       height: 200,
-      color: ''
     };
 
     it('should return true when truck is inside the zone', () => {

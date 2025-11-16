@@ -1,6 +1,6 @@
 import { Component, ElementRef, inject, viewChild } from '@angular/core';
 import { MapService } from './map.service';
-import { MapBounds, Zone } from './models/map.models';
+import { MapBounds, Zone, ZoneType } from './models/map.models';
 import { TruckComponent } from "./truck/truck.component";
 import { TruckService } from './truck/truck.service';
 
@@ -52,7 +52,8 @@ export class MapComponent {
 
   private renderZones(zones: Zone[]): void {
     zones.forEach(zone => {
-      this.mapContext.fillStyle = zone.color;
+      const color = zone.type === ZoneType.Loading ? '#f38840ff' : '#3278b1ff';
+      this.mapContext.fillStyle = color;
       this.mapContext.fillRect(
         zone.x,
         zone.y,

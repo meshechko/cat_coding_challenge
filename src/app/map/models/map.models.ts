@@ -6,7 +6,6 @@ export interface Zone {
   y: number;
   width: number;
   height: number;
-  color: string;
 }
 
 export interface MapInfo {
