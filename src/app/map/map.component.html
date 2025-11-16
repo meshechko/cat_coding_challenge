@@ -1,2 +1,9 @@
 <canvas #map></canvas>
 <truck></truck>
+<div>
+  <h1>{{ siteName }}</h1>
+  <p>{{ siteAddress }}</p>
+  <p>Latitude: {{ siteCoordinates.latitude }}, Longitude: {{ siteCoordinates.longitude }}</p>
+  <p>Created At: {{ metadata.createdAt | date:'medium' }}</p>
+  <p>Last Updated: {{ metadata.lastUpdated | date:'medium' }}</p>
+</div>

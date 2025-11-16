@@ -1,13 +1,13 @@
 {
-  "siteName": "CAT Amrun Mine",
+  "siteName": "Amrun Mine",
   "location": {
     "latitude": -12.9515,
     "longitude": 141.6500,
     "address": "Amrun, Western Cape York Peninsula, Queensland, Australia"
   },
   "metadata": {
-    "createdAt": "2024-01-15T08:30:00Z",
-    "lastUpdated": "2024-11-15T14:22:00Z"
+    "createdAt": "2025-01-15T08:30:00Z",
+    "lastUpdated": "2025-11-15T14:22:00Z"
   },
   "zones": [
     {

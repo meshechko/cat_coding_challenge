@@ -4,10 +4,11 @@ import { MapBounds, MapInfo, Zone, ZoneType } from './models/map.models';
 import { TruckComponent } from "./truck/truck.component";
 import { TruckService } from './truck/truck.service';
 import { take } from 'rxjs';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-map',
-  imports: [TruckComponent],
+  imports: [TruckComponent, CommonModule],
   templateUrl: './map.component.html',
   styleUrl: './map.component.css'
 })
@@ -25,12 +26,27 @@ export class MapComponent {
     maxY: this.mapHeight
   };
 
+  public siteName: string = '';
+  public siteAddress: string = '';
+  public siteCoordinates: { latitude: number; longitude: number } = { latitude: 0, longitude: 0 };
+  public metadata: { createdAt: string; lastUpdated: string } = { createdAt: '', lastUpdated: '' };
+
   public ngOnInit(): void {
     this.initializeCanvas();
     this.mapService.loadMap$()
     .pipe(take(1))
     .subscribe(
       (mapInfo: MapInfo) => {
+        this.siteName = mapInfo.siteName;
+        this.siteAddress = mapInfo.location.address;
+        this.siteCoordinates = {
+          latitude: mapInfo.location.latitude,
+          longitude: mapInfo.location.longitude
+        };
+        this.metadata = {
+          createdAt: mapInfo.metadata.createdAt,
+          lastUpdated: mapInfo.metadata.lastUpdated
+        };
         this.renderZones(mapInfo.zones);
         this.truckService.initialize(
           mapInfo.zones,
