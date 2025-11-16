@@ -36,7 +36,7 @@ export class TruckService {
     
     const currentZone = this.zones[this.currentZoneIndex];
     const currentState = this.truckStateSubject$.value;
-    const target = { x: currentZone.x, y: currentZone.y };
+    const target = this.getRandomPointInZone(currentZone);
     const delta = this.calculateDelta(target, currentState);
     const distanceToTarget = Math.hypot(delta.dx, delta.dy);
     const step = this.getRandomInt(MIN_STEP, MAX_STEP);
@@ -91,5 +91,12 @@ export class TruckService {
 
   private clamp(value: number, max: number): number {
     return Math.max(0, Math.min(max, value));
+  }
+
+  private getRandomPointInZone(zone: Zone): { x: number; y: number } {
+    return {
+      x: zone.x + Math.random() * zone.width,
+      y: zone.y + Math.random() * zone.height
+    };
   }
 }
