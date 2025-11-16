@@ -1,10 +1,11 @@
 import { Component, ElementRef, inject, viewChild } from '@angular/core';
 import { MapService } from './map.service';
 import { Zone } from './models/map.models';
+import { TruckComponent } from "./truck/truck.component";
 
 @Component({
   selector: 'app-map',
-  imports: [],
+  imports: [TruckComponent],
   templateUrl: './map.component.html',
   styleUrl: './map.component.css'
 })

@@ -1,8 +1,13 @@
-<div class="truck-container" [style.left.px]="x" [style.top.px]="y">
-  <div class="truck status-{{ status }}"></div>
-  <div class="truck-info">
-    <div><strong>ID:</strong> {{ id }}</div>
-    <div><strong>Status:</strong> {{ status }}</div>
-    <div><strong>Speed:</strong> {{ speed }} km/h</div>
+@if (truckState$ | async; as truckState) {
+  <div class="truck-container"
+    [style.left.px]="truckState.position.x" 
+    [style.top.px]="truckState.position.y"
+  >
+    <div class="truck" [class]="'status-' + truckState.status"></div>
+    <div class="truck-info">
+      <div><strong>ID:</strong> {{ truckState.id }}</div>
+      <div><strong>Status:</strong> {{ truckState.status }}</div>
+      <div><strong>Speed:</strong> {{ truckState.speed }} km/h</div>
+    </div>
   </div>
-</div>
+}
