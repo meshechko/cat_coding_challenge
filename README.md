@@ -1,6 +1,18 @@
 # CatCodingChallenge
-
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.8.
+
+## Notes
+- Zones loaded from static JSON (`mock-data/map.json`) to simulate loading from external source
+- Truck position updates every 2 seconds using RxJS interval
+- Single truck (T-001) cycles through zones sequentially
+- Target that points a truck to a zone is random point within Loading or Dump zones
+- Truck movement random step size between 80 and 120 px with random offsets between 0 and 30px for natural movement (wobble)
+- For simplicity speed is calculated as step/2 
+- There's a 20% chance to stop briefly during movement to demonstrate all statuses
+- Truck can't go out of map boundaries, its position gets clamped to stay within map bounds
+- Loading/Dumping status - truck's center point is inside a zone
+- Hauling status - truck is moving (speed > 0) outside of Loading/Dumping zones
+- Idle status - truck is stationary (speed = 0) outside of Loading/Dumping zones
 
 ## Development server
 
