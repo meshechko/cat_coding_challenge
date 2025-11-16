@@ -2,6 +2,7 @@ import { Component, ElementRef, inject, viewChild } from '@angular/core';
 import { MapService } from './map.service';
 import { Zone } from './models/map.models';
 import { TruckComponent } from "./truck/truck.component";
+import { TruckService } from './truck/truck.service';
 
 @Component({
   selector: 'app-map',
@@ -11,6 +12,7 @@ import { TruckComponent } from "./truck/truck.component";
 })
 export class MapComponent {
   private readonly mapService = inject(MapService);
+  private readonly truckService = inject(TruckService);
 
   private readonly canvasRef = viewChild.required<ElementRef>('map');
   private mapContext!: CanvasRenderingContext2D;
@@ -35,6 +37,9 @@ export class MapComponent {
     this.mapService.loadMap$().subscribe({
       next: (mapInfo) => {
         this.renderZones(mapInfo.zones);
+        this.truckService.initialize(
+          mapInfo.zones
+        );
       },
     });
   }
